@@ -79,6 +79,7 @@ const RestaurantMenu = () => {
   const [cart, setCart] = useState([]);
   const [tableNumber, setTableNumber] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
+  const [darkMode, setDarkMode] = useState(false); // State for dark mode
 
   const addToCart = (item) => {
     setCart([...cart, { ...item, quantity: 1 }]);
@@ -104,19 +105,34 @@ const RestaurantMenu = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'}`}>
+      
+      {/* Fixed Header */}
+      <div className={`fixed top-0 left-0 right-0 py-4 shadow-lg text-center bg-gradient-to-r from-purple-500 to-pink-500 z-10`}>
+        <h1 className="text-5xl font-bold">DURYODHANA'S CAFE</h1>
+        <p className="mt-1 text-lg italic">Savor the Flavors of India!</p>
+      </div>
 
-      <div className="bg-red-500 text-black py-8 ">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center">Waah Taj ⭐⭐⭐🌟💫</h1>
-          <p className="text-center mt-2 text-black">जेवणाचा आस्वाद घ्या !!!</p>
+      {/* Dark Mode Toggle */}
+      <div className="flex justify-center mt-16">
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className={`px-4 py-2 rounded-lg transition-colors ${darkMode ? 'bg-gray-700 text-white' : 'bg-gray-300 text-black'}`}
+        >
+          Toggle Dark Mode
+        </button>
+      </div>
+
+      {/* Restaurant Description */}
+      <div className="container mx-auto px-4 mt-4">
+        <div className={`bg-white shadow-md rounded-lg p-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+          <h2 className="text-2xl font-semibold">Welcome to Duryodhana's Cafe!</h2>
+          <p className="mt-2">Experience the rich and diverse flavors of Indian cuisine, crafted with love and tradition. Our menu features a variety of dishes that are sure to tantalize your taste buds.</p>
         </div>
       </div>
 
       {/* Categories */}
-
-      <div className="bg-white shadow-sm">
+      <div className={`bg-white shadow-md mt-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex space-x-4 overflow-x-auto">
             {CATEGORIES.map((category) => (
@@ -124,44 +140,42 @@ const RestaurantMenu = () => {
                 key={category.id}
                 onClick={() => setSelectedCategory(category.name)}
                 className={`flex items-center px-6 py-3 rounded-full transition-colors ${selectedCategory === category.name
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-indigo-700 text-white'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                   }`}
               >
-                <span className="mr-2">{category.icon}</span>
-                <span>{category.name}</span>
+                <span className="mr-2 text-2xl">{category.icon}</span>
+                <span className="font-medium">{category.name}</span>
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 mt-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
           {/* Menu Items */}
-
           <div className="md:col-span-2 space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-800">{selectedCategory}</h2>
+            <h2 className="text-3xl font-semibold">{selectedCategory}</h2>
             <div className="grid gap-6">
               {MENU_ITEMS[selectedCategory].map((item) => (
-                <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div key={item.id} className={`bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                   <div className='flex justify-center items-center'>
                     <img
                       src={item.image1}
                       alt={item.name}
-                      className="w-1/2 h-48 object-cover"
+                      className="w-3/4 h-48 object-cover" // Adjusted image size
                     />
-
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
-                    <p className="mt-2 text-gray-600">{item.description}</p>
+                    <h3 className="text-xl font-semibold">{item.name}</h3>
+                    <p className="mt-2">{item.description}</p>
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-2xl font-bold text-indigo-600">₹{item.price}</span>
                       <button
                         onClick={() => addToCart(item)}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                        className="px-4 py-2 bg-indigo-700 text-white rounded-lg hover:bg-indigo-800 transition-colors"
                       >
                         Add to Order
                       </button>
@@ -174,8 +188,8 @@ const RestaurantMenu = () => {
 
           {/* Cart */}
           <div className="md:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-8">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Your Order</h2>
+            <div className={`rounded-lg shadow-md p-6 sticky top-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+              <h2 className="text-3xl font-semibold mb-6">Your Order</h2>
 
               <div className="space-y-4 mb-6">
                 <input
@@ -183,13 +197,13 @@ const RestaurantMenu = () => {
                   placeholder="Table Number"
                   value={tableNumber}
                   onChange={(e) => setTableNumber(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
                 />
                 <textarea
                   placeholder="Special Requests"
                   value={specialRequests}
                   onChange={(e) => setSpecialRequests(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24"
+                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
                 />
               </div>
 
@@ -200,12 +214,12 @@ const RestaurantMenu = () => {
                   {cart.map((item) => (
                     <div key={item.id} className="flex justify-between items-center">
                       <div>
-                        <h3 className="font-medium text-gray-800">{item.name}</h3>
-                        <p className="text-gray-600">₹{item.price}</p>
+                        <h3 className="font-medium">{item.name}</h3>
+                        <p>₹{item.price}</p>
                       </div>
                       <button
                         onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-600 hover:text-red-800"
                       >
                         Remove
                       </button>
@@ -216,7 +230,7 @@ const RestaurantMenu = () => {
 
               <div className="mt-6 pt-6 border-t">
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-lg font-semibold text-gray-800">Total:</span>
+                  <span className="text-lg font-semibold">Total:</span>
                   <span className="text-2xl font-bold text-indigo-600">₹{getTotalPrice()}</span>
                 </div>
                 <button
@@ -224,7 +238,7 @@ const RestaurantMenu = () => {
                   disabled={cart.length === 0}
                   className={`w-full py-3 rounded-lg text-white text-lg font-semibold transition-colors ${cart.length === 0
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-indigo-600 hover:bg-indigo-700'
+                      : 'bg-indigo-700 hover:bg-indigo-800'
                     }`}
                 >
                   Place Order
@@ -239,3 +253,4 @@ const RestaurantMenu = () => {
 };
 
 export default RestaurantMenu;
+  
