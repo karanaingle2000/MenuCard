@@ -79,7 +79,6 @@ const RestaurantMenu = () => {
   const [cart, setCart] = useState([]);
   const [tableNumber, setTableNumber] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
-  const [darkMode, setDarkMode] = useState(false); // State for dark mode
 
   const addToCart = (item) => {
     setCart([...cart, { ...item, quantity: 1 }]);
@@ -105,34 +104,31 @@ const RestaurantMenu = () => {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'}`}>
+    <div className={`min-h-screen bg-gray-100 text-gray-800`} >
       
       {/* Fixed Header */}
-      <div className={`fixed top-0 left-0 right-0 py-4 shadow-lg text-center bg-gradient-to-r from-purple-500 to-pink-500 z-10`}>
-        <h1 className="text-5xl font-bold">DURYODHANA'S CAFE</h1>
-        <p className="mt-1 text-lg italic">Savor the Flavors of India!</p>
-      </div>
-
-      {/* Dark Mode Toggle */}
-      <div className="flex justify-center mt-16">
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className={`px-4 py-2 rounded-lg transition-colors ${darkMode ? 'bg-gray-700 text-white' : 'bg-gray-300 text-black'}`}
-        >
-          Toggle Dark Mode
-        </button>
+      <div className={`fixed top-0 left-0 right-0 py-4 shadow-lg flex items-center bg-gradient-to-r from-purple-500 to-pink-500 z-10`}>
+        <img 
+          src="https://www.shutterstock.com/image-vector/letter-d-coffee-shop-cafe-600nw-1530888344.jpg" 
+          alt="Cafe Logo" 
+          className="w-auto h-25 mr-6 pl-20 mix-blend-multiply"  
+        />
+        <div className="text-center flex-1 pr-55">
+          <h1 className="text-5xl font-bold italic">DURYODHANA'S CAFE</h1>
+          <p className="mt-1 text-lg italic">Savor the Flavors of India!</p>
+        </div>
       </div>
 
       {/* Restaurant Description */}
-      <div className="container mx-auto px-4 mt-4">
-        <div className={`bg-white shadow-md rounded-lg p-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+      <div className="container mx-auto px-4 mt-35">
+        <div className={` shadow-md rounded-lg p-5`}>
           <h2 className="text-2xl font-semibold">Welcome to Duryodhana's Cafe!</h2>
           <p className="mt-2">Experience the rich and diverse flavors of Indian cuisine, crafted with love and tradition. Our menu features a variety of dishes that are sure to tantalize your taste buds.</p>
         </div>
       </div>
 
       {/* Categories */}
-      <div className={`bg-white shadow-md mt-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+      <div className={` shadow-md mt-4`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex space-x-4 overflow-x-auto">
             {CATEGORIES.map((category) => (
@@ -160,12 +156,12 @@ const RestaurantMenu = () => {
             <h2 className="text-3xl font-semibold">{selectedCategory}</h2>
             <div className="grid gap-6">
               {MENU_ITEMS[selectedCategory].map((item) => (
-                <div key={item.id} className={`bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div key={item.id} className={` rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105`}>
                   <div className='flex justify-center items-center'>
                     <img
                       src={item.image1}
                       alt={item.name}
-                      className="w-3/4 h-48 object-cover" // Adjusted image size
+                      className="w-auto h-90 object-cover"  
                     />
                   </div>
                   <div className="p-6">
@@ -188,7 +184,7 @@ const RestaurantMenu = () => {
 
           {/* Cart */}
           <div className="md:col-span-1">
-            <div className={`rounded-lg shadow-md p-6 sticky top-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className={`rounded-lg shadow-md p-6 sticky top-40`}>
               <h2 className="text-3xl font-semibold mb-6">Your Order</h2>
 
               <div className="space-y-4 mb-6">
@@ -197,13 +193,13 @@ const RestaurantMenu = () => {
                   placeholder="Table Number"
                   value={tableNumber}
                   onChange={(e) => setTableNumber(e.target.value)}
-                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
+                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500`}
                 />
                 <textarea
                   placeholder="Special Requests"
                   value={specialRequests}
                   onChange={(e) => setSpecialRequests(e.target.value)}
-                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
+                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24`}
                 />
               </div>
 
@@ -247,10 +243,22 @@ const RestaurantMenu = () => {
             </div>
           </div>
         </div>
+        
+    
       </div>
+      {/* Footer */}
+<footer className="bg-purple-500 text-white py-4 mt-8">
+  <div className="container mx-auto text-center">
+    <p className="text-lg">
+      {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 
+      - {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+    </p>
+    <p className="text-sm">Thank you for dining with us!</p>
+  </div>
+</footer>
+
     </div>
   );
 };
 
 export default RestaurantMenu;
-  
